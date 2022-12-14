@@ -20,7 +20,6 @@ import com.mongodb.client.MongoDatabase;
 
 public class Model {
 	
-	static 	MongoClient mongoClient;
 	String ip;
 	String port;
 	String db;
@@ -67,21 +66,6 @@ public class Model {
 	public Boolean MongoCompUser(String usuari, String contr) {
 		
 		return true;
-	}
-	
-	public MongoCollection<Document> mongoObrir() {
-		
-		mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
-		MongoDatabase database = mongoClient.getDatabase(this.db);
-		MongoCollection<Document> coleccion = database.getCollection("canciones");
-		
-		return coleccion;
-		
-	}
-	
-	public void mongoTancar() {
-		mongoClient.close();
-		
 	}
 	
 	
