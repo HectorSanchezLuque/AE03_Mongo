@@ -6,4 +6,5 @@
  *
  */
 module AE03_Mongo {
+	requires java.desktop;
 }
