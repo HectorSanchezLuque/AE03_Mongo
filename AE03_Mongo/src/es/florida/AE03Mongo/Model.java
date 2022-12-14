@@ -24,7 +24,8 @@ public class Model {
 	String ip;
 	String port;
 	String db;
-	String coleccio;
+	String llibres;
+	String users ;
 	
 	
 	public Model() {
@@ -39,8 +40,8 @@ public class Model {
 			 this.ip = (String) jo.get("ip");
 			 this.port= (String) jo.get("port");
 			 this.db = (String) jo.get("db");
-			 this.coleccio= (String) jo.get("coleccio");
-			
+			 this.llibres= (String) jo.get("llibres");
+			this.users=(String) jo.get("users");
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -71,7 +72,7 @@ public class Model {
 	public MongoCollection<Document> mongoObrir() {
 		
 		mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
-		MongoDatabase database = mongoClient.getDatabase("DAM_MongoDB");
+		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection("canciones");
 		
 		return coleccion;

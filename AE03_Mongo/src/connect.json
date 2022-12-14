@@ -1,6 +1,7 @@
 {
 "ip": "localhost",
 "port": "27017",
-"db":"Biblioteca",
-"coleccio":"llibres"
+"db":"biblioteca",
+"llibres":"llibres",
+"users":"usuari"
 }
