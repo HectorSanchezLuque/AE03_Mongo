@@ -3,6 +3,10 @@ package es.florida.AE03Mongo;
 import java.io.FileNotFoundException;
 
 import java.io.FileReader;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -35,7 +39,24 @@ public class Model {
 			e.printStackTrace();
 		}
 		
+	}
+	public String MongoConversor(String contr) throws NoSuchAlgorithmException {
+
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        BigInteger number = new BigInteger(1, md.digest(contr.getBytes(StandardCharsets.UTF_8)));
+        StringBuilder hexString = new StringBuilder(number.toString(16));
+
+        while (hexString.length() < 64)
+        {
+            hexString.insert(0, '0');
+        }
+ 
+        return hexString.toString();
 		
 	}
 
+	public Boolean MongoCompUser(String usuari, String contr) {
+		
+		return true;
+	}
 }
