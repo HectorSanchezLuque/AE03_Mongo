@@ -14,6 +14,7 @@ import org.json.simple.parser.JSONParser;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
 
@@ -64,15 +65,21 @@ public class Model {
 	}
 
 	public Boolean MongoCompUser(String usuari, String contr) {
+		MongoCollection<Document> coleccion = mongoObrir();
+		MongoCursor<Document> cursor = coleccion.find().iterator();
+		while (cursor.hasNext()) {
+			return true;
+		}
 		
-		return true;
+		
+		return false;
 	}
 	
 	public MongoCollection<Document> mongoObrir() {
 		
 		mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
-		MongoDatabase database = mongoClient.getDatabase("DAM_MongoDB");
-		MongoCollection<Document> coleccion = database.getCollection("canciones");
+		MongoDatabase database = mongoClient.getDatabase(this.db);
+		MongoCollection<Document> coleccion = database.getCollection(this.users);
 		
 		return coleccion;
 		
