@@ -8,14 +8,19 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.bson.Document;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 
 
 public class Model {
 	
-	
+	static 	MongoClient mongoClient;
 	String ip;
 	String port;
 	String db;
@@ -62,4 +67,21 @@ public class Model {
 		
 		return true;
 	}
+	
+	public MongoCollection<Document> mongoObrir() {
+		
+		mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
+		MongoDatabase database = mongoClient.getDatabase("DAM_MongoDB");
+		MongoCollection<Document> coleccion = database.getCollection("canciones");
+		
+		return coleccion;
+		
+	}
+	
+	public void mongoTancar() {
+		mongoClient.close();
+		
+	}
+	
+	
 }
