@@ -15,7 +15,8 @@ import javax.swing.JTextField;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.json.simple.JSONObject;
+
+import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import com.mongodb.BasicDBObject;
@@ -110,18 +111,23 @@ public class Model {
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
 		
-		String contingut="";
+		String mostr="";
 		
 		MongoCursor<Document> cursor = coleccion.find().iterator();
 		
 		while (cursor.hasNext()) {
-			contingut += cursor.next().toJson()+"\n";
+		
+			JSONObject json = new JSONObject(cursor.next().toJson());
+			
+			mostr+=json.get("Id")+" "+json.get("Titulo") + " "+json.get("Autor")+json.get("Anyo_nacimiento")+" "
+					+" "+json.get("Editorial")+" "+json.get("Numero_paginas")+"\n";
 		
 		}
-
 		mongoClient.close();
+		return mostr;
+	
 		
-		return contingut;
+		
 	}
 
 	public void MongoInsert() {
