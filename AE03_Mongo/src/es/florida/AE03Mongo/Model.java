@@ -1,5 +1,6 @@
 package es.florida.AE03Mongo;
 
+import java.awt.Image;
 import java.io.FileNotFoundException;
 
 
@@ -135,25 +136,40 @@ public class Model {
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
 		
+		JTextField id = new JTextField();
 		JTextField titol = new JTextField();
-		JTextField pagines = new JTextField();
+		JTextField autor = new JTextField();
+		JTextField anyo_Naixement = new JTextField();
+		JTextField anyo_Publicacio = new JTextField();
 		JTextField editorial = new JTextField();
+		JTextField pagines = new JTextField();
+		JTextField imatge = new JTextField();
 			
+			id.setText("");
 			titol.setText("");
-			pagines.setText("");
+			autor.setText("");
+			anyo_Naixement.setText("");
+			anyo_Publicacio.setText("");
 			editorial.setText("");
+			pagines.setText("");
+			imatge.setText("");
 			
-			Object[] message = { "Titol:", titol, "Pagines:", pagines, "Editorial:", editorial };
+			Object[] message = { "Titol:", titol, "Autor:", autor, "Any de naixement:", anyo_Naixement, "Any de publicació:", anyo_Publicacio, "Editoria:", editorial, "Pagines:", pagines, "Imatge:", imatge  };
 			int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
 			
-		
-		Llibre l = new Llibre(titol.getText(), Integer.parseInt(pagines.getText()), editorial.getText());
+			
+		// (int ident, String tit, String autr, int aN, int aP, String ed, int p, Image im)
+		Llibre l = new Llibre(Integer.parseInt(id.getText()), titol.getText(), autor.getText(), Integer.parseInt(anyo_Naixement.getText()), Integer.parseInt(anyo_Publicacio.getText()), editorial.getText(), Integer.parseInt(pagines.getText()));
 		Document doc = new Document();
 
-		doc.append("titol", l.getTitol());
-		doc.append("pagines", l.getPagines());
-		doc.append("editorial", l.getEditorial());
-		doc.append("imatge", l.getImatge());
+		doc.append("Id", l.getId());
+		doc.append("Titulo", l.getTitol());
+		doc.append("Autor", l.getAutor());
+		doc.append("Anyo_nacimiento", l.getAnyo_Naixement());
+		doc.append("Anyo_publicacion", l.getAnyo_Publicacio());
+		doc.append("Editorial", l.getEditorial());
+		doc.append("Numero_paginas", l.getPagines());
+		doc.append("Thumbnail", l.getImatge());
 		
 		coleccion.insertOne(doc);
 		
