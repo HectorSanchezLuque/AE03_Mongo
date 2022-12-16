@@ -64,6 +64,7 @@ public class Controlador {
 		
 		vista.getBtnCrear().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				modelo.MongoInsert();
 			}
 		});
 	}
