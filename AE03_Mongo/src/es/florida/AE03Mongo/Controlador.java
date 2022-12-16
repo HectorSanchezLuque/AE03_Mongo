@@ -22,7 +22,6 @@ public class Controlador {
 			throws HeadlessException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		this.vista = vista;
 		this.modelo = modelo;
-		System.out.println(modelo.MongoConversor("roberto"));
 		initEventHandlers();
 
 	}

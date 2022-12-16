@@ -3,5 +3,5 @@
 "port": "27017",
 "db":"biblioteca",
 "llibres":"llibres",
-"users":"usuari"
+"users":"usuaris"
 }
