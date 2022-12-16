@@ -139,6 +139,7 @@ public class Model {
 			
 			Object[] message = { "Titol:", titol, "Pagines:", pagines, "Editorial:", editorial };
 			int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
+			
 		
 		Llibre l = new Llibre(titol.getText(), Integer.parseInt(pagines.getText()), editorial.getText());
 		Document doc = new Document();
