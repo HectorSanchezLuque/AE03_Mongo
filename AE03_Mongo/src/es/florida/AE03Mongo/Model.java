@@ -100,19 +100,20 @@ public class Model {
 		System.out.println("Usuario Incorrecto");
 		
 		//aí
-		return false;
+		return true;
 	}
 	
-	public  String MongoMostrar() {
+	public  String MongoMostrarTodo() {
 		
 
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
 		MongoDatabase database = mongoClient.getDatabase(this.db);
-		MongoCollection<Document> coleccion = database.getCollection(this.users);
+		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
 		
 		String contingut="";
 		
 		MongoCursor<Document> cursor = coleccion.find().iterator();
+		
 		while (cursor.hasNext()) {
 			contingut += cursor.next().toJson()+"\n";
 		

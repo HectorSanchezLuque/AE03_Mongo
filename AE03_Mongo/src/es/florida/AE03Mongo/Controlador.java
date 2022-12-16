@@ -66,5 +66,14 @@ public class Controlador {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+		
+		vista.getBtnMostrarTodo().addActionListener(
+				
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						vista.getTextArea().setText(modelo.MongoMostrarTodo());
+					}
+				}
+				);
 	}
 }
