@@ -79,7 +79,8 @@ public class Model {
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.users);
 		// CRUD operations
-		
+		System.out.println(contr);
+
 		Bson query = and(Arrays.asList(eq("usuari",usuari ), eq("contrasenya", contr)));
 		
 		MongoCursor<Document> cursor = coleccion.find(query).iterator();
@@ -91,11 +92,35 @@ public class Model {
 		}
 		
 		
+		
+		
 
 		
 		mongoClient.close();
 		System.out.println("Usuario Incorrecto");
+		
+		//aí
 		return false;
+	}
+	
+	public  String MongoMostrar() {
+		
+
+		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
+		MongoDatabase database = mongoClient.getDatabase(this.db);
+		MongoCollection<Document> coleccion = database.getCollection(this.users);
+		
+		String contingut="";
+		
+		MongoCursor<Document> cursor = coleccion.find().iterator();
+		while (cursor.hasNext()) {
+			contingut += cursor.next().toJson()+"\n";
+		
+		}
+
+		mongoClient.close();
+		
+		return contingut;
 	}
 
 	public void MongoInsert() {
