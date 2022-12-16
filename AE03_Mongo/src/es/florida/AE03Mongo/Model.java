@@ -2,13 +2,16 @@ package es.florida.AE03Mongo;
 
 import java.io.FileNotFoundException;
 
+
 import java.io.FileReader;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -20,6 +23,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.and;
 
 public class Model {
 
@@ -68,26 +72,27 @@ public class Model {
 
 	public Boolean MongoCompUser(String usuari, String contr) {
 
-		Boolean comprobar = false;
-
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.users);
 		// CRUD operations
-		mongoClient.close();
 		
-		BasicDBObject criteri = new BasicDBObject();
-		criteri.append("usuari", usuari);
-		criteri.append("contrasenya", contr);
+		Bson query = and(Arrays.asList(eq("usuari",usuari ), eq("contrasenya", contr)));
 		
-		MongoCursor<Document> cursor = (MongoCursor<Document>) coleccion.find(criteri);
-		while (cursor.hasNext()) {
-			if (cursor.next().toString().equals(usuari)) {
-				comprobar = true;
-			}
+		MongoCursor<Document> cursor = coleccion.find(query).iterator();
+		
+		if (cursor.hasNext()) {
+			mongoClient.close();
+			System.out.println("Usuario Correcto");
+			return true;
 		}
+		
+		
 
-		return comprobar;
+		
+		mongoClient.close();
+		System.out.println("Usuario Incorrecto");
+		return false;
 	}
 
 }
