@@ -61,5 +61,10 @@ public class Controlador {
 
 	public void initEventHandlers() throws HeadlessException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		MongoUserCon();
+		
+		vista.getBtnCrear().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 	}
 }

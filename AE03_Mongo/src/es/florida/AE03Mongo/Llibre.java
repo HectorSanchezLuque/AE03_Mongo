@@ -34,13 +34,12 @@ public class Llibre {
 		return imatge;
 	}
 
-	public Llibre(int id, String titol, int pagines, String editorial, Image imatge) {
+	public Llibre(String titol, int pagines, String editorial) {
 		super();
-		this.id = id;
 		this.titol = titol;
 		this.pagines = pagines;
 		this.editorial = editorial;
-		this.imatge = imatge;
+
 	}
 	
 	
