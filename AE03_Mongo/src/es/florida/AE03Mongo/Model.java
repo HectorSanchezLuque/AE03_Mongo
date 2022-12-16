@@ -10,6 +10,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.json.simple.JSONObject;
@@ -120,4 +123,31 @@ public class Model {
 		return contingut;
 	}
 
+	public void MongoInsert() {
+		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
+		MongoDatabase database = mongoClient.getDatabase(this.db);
+		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
+		
+		JTextField titol = new JTextField();
+		JTextField pagines = new JTextField();
+		JTextField editorial = new JTextField();
+			
+			titol.setText("");
+			pagines.setText("");
+			editorial.setText("");
+			
+			Object[] message = { "Titol:", titol, "Pagines:", pagines, "Editorial:", editorial };
+			int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
+		
+		Llibre l = new Llibre(titol.getText(), Integer.parseInt(pagines.getText()), editorial.getText());
+		Document doc = new Document();
+
+		doc.append("titol", l.getTitol());
+		doc.append("pagines", l.getPagines());
+		doc.append("editorial", l.getEditorial());
+		doc.append("imatge", l.getImatge());
+		
+		coleccion.insertOne(doc);
+		
+	}
 }

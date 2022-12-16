@@ -8,10 +8,18 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Vista extends JFrame {
 
 	private JPanel contentPane;
+	private JButton btnMostrarTodo;
+	private JButton btnMostDoc;
+	private JButton btnActualitzar;
+	private JButton btnEsborrar;
+	private JButton btnCrear;
+	private JTextArea textArea;
 
 	/**
 	 * Launch the application.
@@ -29,6 +37,42 @@ public class Vista extends JFrame {
 		});
 	}*/
 
+	public JButton getBtnMostrarTodo() {
+		return btnMostrarTodo;
+	}
+	public void setBtnMostrarTodo(JButton btnMostrarTodo) {
+		this.btnMostrarTodo = btnMostrarTodo;
+	}
+	public JButton getBtnMostDoc() {
+		return btnMostDoc;
+	}
+	public void setBtnMostDoc(JButton btnMostDoc) {
+		this.btnMostDoc = btnMostDoc;
+	}
+	public JButton getBtnActualitzar() {
+		return btnActualitzar;
+	}
+	public void setBtnActualitzar(JButton btnActualitzar) {
+		this.btnActualitzar = btnActualitzar;
+	}
+	public JButton getBtnEsborrar() {
+		return btnEsborrar;
+	}
+	public void setBtnEsborrar(JButton btnEsborrar) {
+		this.btnEsborrar = btnEsborrar;
+	}
+	public JButton getBtnCrear() {
+		return btnCrear;
+	}
+	public void setBtnCrear(JButton btnCrear) {
+		this.btnCrear = btnCrear;
+	}
+	public JTextArea getTextArea() {
+		return textArea;
+	}
+	public void setTextArea(JTextArea textArea) {
+		this.textArea = textArea;
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -41,27 +85,27 @@ public class Vista extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnMostrarTodo = new JButton("Mostrar tot");
+		btnMostrarTodo = new JButton("Mostrar tot");
 		btnMostrarTodo.setBounds(16, 56, 157, 50);
 		contentPane.add(btnMostrarTodo);
 		
-		JButton btnMostDoc = new JButton("Mostrar Document");
+		btnMostDoc = new JButton("Mostrar Document");
 		btnMostDoc.setBounds(16, 126, 157, 50);
 		contentPane.add(btnMostDoc);
 		
-		JButton btnActualitzar = new JButton("Actualitzar Document");
+		btnActualitzar = new JButton("Actualitzar Document");
 		btnActualitzar.setBounds(10, 197, 163, 50);
 		contentPane.add(btnActualitzar);
 		
-		JButton btnEsborrar = new JButton("Esborrar Document");
+		btnEsborrar = new JButton("Esborrar Document");
 		btnEsborrar.setBounds(16, 271, 157, 50);
 		contentPane.add(btnEsborrar);
 		
-		JButton btnCrear = new JButton("Crear Document");
+		btnCrear = new JButton("Crear Document");
 		btnCrear.setBounds(16, 344, 157, 50);
 		contentPane.add(btnCrear);
 		
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setBounds(183, 11, 541, 439);
 		contentPane.add(textArea);
