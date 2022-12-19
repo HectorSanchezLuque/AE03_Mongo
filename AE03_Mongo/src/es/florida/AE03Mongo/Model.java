@@ -1,12 +1,14 @@
 package es.florida.AE03Mongo;
 
 import java.awt.Image;
-
+import java.io.File;
 import java.io.FileNotFoundException;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -15,10 +17,11 @@ import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
-
+import org.bson.internal.Base64;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -171,7 +174,7 @@ public class Model {
 
 	}
 
-	public void MongoInsert() {
+	public void MongoInsert() throws IOException {
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
@@ -187,7 +190,10 @@ public class Model {
 		JTextField pagines = new JTextField();
 		JTextField imatge = new JTextField();
 		JFileChooser arch = new JFileChooser();
-
+		
+		
+		 FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images","jpg","png");
+	        arch.addChoosableFileFilter(filter);
 		id.setText("");
 		titol.setText("");
 		autor.setText("");
@@ -199,10 +205,18 @@ public class Model {
 
 		Object[] message = { "Titol:", titol, "Autor:", autor, "Any de naixement:", anyo_Naixement,
 				"Any de publicació:", anyo_Publicacio, "Editoria:", editorial, "Pagines:", pagines, "Imatge:", arch };
-		int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
+		
+		int option = JOptionPane.showConfirmDialog(null, message, "Crear Document", JOptionPane.OK_CANCEL_OPTION);
 
 		// (int ident, String tit, String autr, int aN, int aP, String ed, int p, Image
 		// im)
+		System.out.println(arch);
+		File f = arch.getSelectedFile();
+		byte[] fContent = Files.readAllBytes(f.toPath());
+		String encodedString = Base64.encode(fContent);
+		
+		
+		
 		Llibre l = new Llibre(Integer.parseInt(id.getText()), titol.getText(), autor.getText(),
 				Integer.parseInt(anyo_Naixement.getText()), Integer.parseInt(anyo_Publicacio.getText()),
 				editorial.getText(), Integer.parseInt(pagines.getText()));
@@ -215,7 +229,7 @@ public class Model {
 		doc.append("Anyo_publicacion", l.getAnyo_Publicacio());
 		doc.append("Editorial", l.getEditorial());
 		doc.append("Numero_paginas", l.getPagines());
-		doc.append("Thumbnail", l.getImatge());
+		doc.append("Thumbnail", encodedString);
 
 		coleccion.insertOne(doc);
 
