@@ -82,7 +82,7 @@ public class Model {
 		// CRUD operations
 		System.out.println(contr);
 
-		Bson query = and(Arrays.asList(eq("usuari", usuari), eq("contrasenya", contr)));
+		Bson query = and(Arrays.asList(eq("user", usuari), eq("pass", contr)));
 
 		MongoCursor<Document> cursor = coleccion.find(query).iterator();
 
