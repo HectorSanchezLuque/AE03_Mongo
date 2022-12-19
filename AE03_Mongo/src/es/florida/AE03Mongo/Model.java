@@ -1,10 +1,11 @@
 package es.florida.AE03Mongo;
 
 import java.awt.Image;
-
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -12,10 +13,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import org.apache.commons.codec.binary.Base64;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -30,6 +33,9 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.and;
+
+import java.awt.image.BufferedImage;
+
 
 public class Model {
 
@@ -221,7 +227,7 @@ public class Model {
 
 	}
 
-	public void mongoRetornDoc(String id) {
+	public Llibre mongoRetornDoc(int id) {
 		
 		String titol="";
 		String autor="";
@@ -231,16 +237,14 @@ public class Model {
 		int pagines=0;
 		Image imatge = null;
 		
-		
-		
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
 		
 		Bson query = eq("Id", id);
 		
-		MongoCursor<Document> cursor = coleccion.find().iterator();
-		while (cursor.hasNext()) {
+		MongoCursor<Document> cursor = coleccion.find(query).iterator();
+		
 			
 			while (cursor.hasNext()) {
 				
@@ -262,13 +266,13 @@ public class Model {
 
 				if (json.containsKey("Anyo_nacimiento")) {
 
-					anyo_Naixement=  (int) json.get("Anyo_nacimiento");
+					anyo_Naixement=  Integer.parseInt(json.get("Anyo_nacimiento").toString());
 
 				}
 
 				if (json.containsKey("Anyo_publicacion")) {
 
-					anyo_Publicacio = (int) json.get("Anyo_publicacion");
+					anyo_Publicacio = Integer.parseInt( json.get("Anyo_publicacion").toString());
 				}
 
 				if (json.containsKey("Editorial")) {
@@ -279,13 +283,22 @@ public class Model {
 
 				if (json.containsKey("Numero_paginas")) {
 
-					pagines = (int) json.get("Numero_paginas");
+					pagines =  Integer.parseInt( json.get("Numero_paginas").toString());
 
 				}
 				
 				if (json.containsKey("Thumbnail")) {
+					
+					byte[] btDataFile = Base64.decodeBase64(json.get("Thumbnail").toString());
+					
+					
 
-					imatge =  (Image) json.get("Thumbnail");
+					 try {
+						 imatge = ImageIO.read(new ByteArrayInputStream(btDataFile));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
 				}
 				
@@ -297,20 +310,12 @@ public class Model {
 				
 				
 			}
-			/*
-			 * 	String titol="";
-		String autor="";
-		int anyo_Naixement=0;
-		int anyo_Publicacio=0;
-		String editorial="";
-		int pagines=0;
-		Image imatge = null;
-			 */
+	
 			// ver esto
-			//Llibre lib = new Llibre(id,titol,autor,anyo_Naixement,anyo_Publicacio,editorial,pagines,imatge);
-			
+			Llibre lib = new Llibre(id,titol,autor,anyo_Naixement,anyo_Publicacio,editorial,pagines,imatge);
+			return lib;
 		}
 		
-	}
+	
 
 }
