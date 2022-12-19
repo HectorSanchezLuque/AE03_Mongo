@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Map;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -185,6 +186,7 @@ public class Model {
 		JTextField editorial = new JTextField();
 		JTextField pagines = new JTextField();
 		JTextField imatge = new JTextField();
+		JFileChooser arch = new JFileChooser();
 
 		id.setText("");
 		titol.setText("");
@@ -196,7 +198,7 @@ public class Model {
 		imatge.setText("");
 
 		Object[] message = { "Titol:", titol, "Autor:", autor, "Any de naixement:", anyo_Naixement,
-				"Any de publicació:", anyo_Publicacio, "Editoria:", editorial, "Pagines:", pagines, "Imatge:", imatge };
+				"Any de publicació:", anyo_Publicacio, "Editoria:", editorial, "Pagines:", pagines, "Imatge:", arch };
 		int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
 
 		// (int ident, String tit, String autr, int aN, int aP, String ed, int p, Image
