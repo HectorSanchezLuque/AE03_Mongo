@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class Vista extends JFrame {
 
@@ -20,6 +21,7 @@ public class Vista extends JFrame {
 	private JButton btnEsborrar;
 	private JButton btnCrear;
 	private JTextArea textArea;
+	private JScrollPane scrollPane;
 
 	/**
 	 * Launch the application.
@@ -105,10 +107,13 @@ public class Vista extends JFrame {
 		btnCrear.setBounds(16, 344, 157, 50);
 		contentPane.add(btnCrear);
 		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(183, 11, 541, 439);
+		contentPane.add(scrollPane);
+		
 		textArea = new JTextArea();
+		scrollPane.setViewportView(textArea);
 		textArea.setEditable(false);
-		textArea.setBounds(183, 11, 541, 439);
-		contentPane.add(textArea);
 		initComponents();
 	}
 	public void initComponents() {

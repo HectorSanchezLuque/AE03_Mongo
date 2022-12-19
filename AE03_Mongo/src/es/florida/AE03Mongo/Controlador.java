@@ -72,7 +72,7 @@ public class Controlador {
 				
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						vista.getTextArea().setText(modelo.MongoMostrarTodo());
+						vista.getTextArea().setText(modelo.MongoMostrarTot());
 					}
 				}
 				);

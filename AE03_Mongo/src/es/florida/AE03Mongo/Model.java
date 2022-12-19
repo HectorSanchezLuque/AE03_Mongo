@@ -1,8 +1,8 @@
 package es.florida.AE03Mongo;
 
 import java.awt.Image;
-import java.io.FileNotFoundException;
 
+import java.io.FileNotFoundException;
 
 import java.io.FileReader;
 import java.math.BigInteger;
@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -17,13 +18,12 @@ import javax.swing.JTextField;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import org.json.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -41,8 +41,8 @@ public class Model {
 	public Model() {
 		JSONParser jsonParser = new JSONParser();
 		try {
-			FileReader reader = new FileReader("./src/connect.json");
 
+			FileReader reader = new FileReader("./src/connect.json");
 			Object obj = jsonParser.parse(reader);
 
 			JSONObject jo = (JSONObject) obj;
@@ -74,7 +74,6 @@ public class Model {
 
 	}
 
-
 	public Boolean MongoCompUser(String usuari, String contr) {
 
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
@@ -83,59 +82,98 @@ public class Model {
 		// CRUD operations
 		System.out.println(contr);
 
-		Bson query = and(Arrays.asList(eq("usuari",usuari ), eq("contrasenya", contr)));
-		
+		Bson query = and(Arrays.asList(eq("usuari", usuari), eq("contrasenya", contr)));
+
 		MongoCursor<Document> cursor = coleccion.find(query).iterator();
-		
+
 		if (cursor.hasNext()) {
 			mongoClient.close();
 			System.out.println("Usuario Correcto");
 			return true;
 		}
-		
-		
-		
-		
 
-		
 		mongoClient.close();
 		System.out.println("Usuario Incorrecto");
-		
-		//aí
+
+		// Ponerlo en false para que autentifique
+		// correctamente----------------------------------------
 		return true;
 	}
-	
-	public  String MongoMostrarTodo() {
-		
+
+	public String MongoMostrarTot() {
 
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
-		
-		String mostr="";
-		
+
+		String mostr = "";
+
 		MongoCursor<Document> cursor = coleccion.find().iterator();
-		
+
 		while (cursor.hasNext()) {
-		
-			JSONObject json = new JSONObject(cursor.next().toJson());
-			
-			mostr+=json.get("Id")+" "+json.get("Titulo") + " "+json.get("Autor")+json.get("Anyo_nacimiento")+" "
-					+" "+json.get("Editorial")+" "+json.get("Numero_paginas")+"\n";
-		
+
+			JSONParser parser = new JSONParser();
+			JSONObject json;
+			try {
+				json = (JSONObject) parser.parse(cursor.next().toJson());
+
+				if (json.containsKey("Id")) {
+
+					mostr += json.get("Id")+" | ";
+
+				}
+
+				if (json.containsKey("Titulo")) {
+
+					mostr += json.get("Titulo")+" | ";
+				}
+
+				if (json.containsKey("Autor")) {
+
+					mostr += json.get("Autor")+" | ";
+				}
+
+				if (json.containsKey("Anyo_nacimiento")) {
+
+					mostr += json.get("Anyo_nacimiento")+" | ";
+
+				}
+
+				if (json.containsKey("Anyo_publicacion")) {
+
+					mostr += json.get("Anyo_publicacion")+" | ";
+				}
+
+				if (json.containsKey("Editorial")) {
+
+					mostr += json.get("Editorial")+" | ";
+
+				}
+
+				if (json.containsKey("Numero_paginas")) {
+
+					mostr += json.get("Numero_paginas")+" | ";
+
+				}
+
+				mostr += "\n\n";
+
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
 		mongoClient.close();
 		return mostr;
-	
-		
-		
+
 	}
 
 	public void MongoInsert() {
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
-		
+
 		JTextField id = new JTextField();
 		JTextField titol = new JTextField();
 		JTextField autor = new JTextField();
@@ -144,22 +182,25 @@ public class Model {
 		JTextField editorial = new JTextField();
 		JTextField pagines = new JTextField();
 		JTextField imatge = new JTextField();
-			
-			id.setText("");
-			titol.setText("");
-			autor.setText("");
-			anyo_Naixement.setText("");
-			anyo_Publicacio.setText("");
-			editorial.setText("");
-			pagines.setText("");
-			imatge.setText("");
-			
-			Object[] message = { "Titol:", titol, "Autor:", autor, "Any de naixement:", anyo_Naixement, "Any de publicació:", anyo_Publicacio, "Editoria:", editorial, "Pagines:", pagines, "Imatge:", imatge  };
-			int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
-			
-			
-		// (int ident, String tit, String autr, int aN, int aP, String ed, int p, Image im)
-		Llibre l = new Llibre(Integer.parseInt(id.getText()), titol.getText(), autor.getText(), Integer.parseInt(anyo_Naixement.getText()), Integer.parseInt(anyo_Publicacio.getText()), editorial.getText(), Integer.parseInt(pagines.getText()));
+
+		id.setText("");
+		titol.setText("");
+		autor.setText("");
+		anyo_Naixement.setText("");
+		anyo_Publicacio.setText("");
+		editorial.setText("");
+		pagines.setText("");
+		imatge.setText("");
+
+		Object[] message = { "Titol:", titol, "Autor:", autor, "Any de naixement:", anyo_Naixement,
+				"Any de publicació:", anyo_Publicacio, "Editoria:", editorial, "Pagines:", pagines, "Imatge:", imatge };
+		int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
+
+		// (int ident, String tit, String autr, int aN, int aP, String ed, int p, Image
+		// im)
+		Llibre l = new Llibre(Integer.parseInt(id.getText()), titol.getText(), autor.getText(),
+				Integer.parseInt(anyo_Naixement.getText()), Integer.parseInt(anyo_Publicacio.getText()),
+				editorial.getText(), Integer.parseInt(pagines.getText()));
 		Document doc = new Document();
 
 		doc.append("Id", l.getId());
@@ -170,8 +211,8 @@ public class Model {
 		doc.append("Editorial", l.getEditorial());
 		doc.append("Numero_paginas", l.getPagines());
 		doc.append("Thumbnail", l.getImatge());
-		
+
 		coleccion.insertOne(doc);
-		
+
 	}
 }
