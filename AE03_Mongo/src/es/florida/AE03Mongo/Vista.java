@@ -116,6 +116,8 @@ public class Vista extends JFrame {
 		scrollPane.setViewportView(textArea);
 		textArea.setEditable(false);
 		
+		initComponents();
+		
 	}
 	public void initComponents() {
 		setResizable(false);
