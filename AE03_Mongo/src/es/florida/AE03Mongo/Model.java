@@ -101,7 +101,7 @@ public class Model {
 	}
 
 	public String MongoMostrarTot() {
-
+		int cont = 0;
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
@@ -111,7 +111,7 @@ public class Model {
 		MongoCursor<Document> cursor = coleccion.find().iterator();
 
 		while (cursor.hasNext()) {
-
+			cont++;
 			JSONParser parser = new JSONParser();
 			JSONObject json;
 			try {
@@ -119,40 +119,40 @@ public class Model {
 
 				if (json.containsKey("Id")) {
 
-					mostr += json.get("Id")+" | ";
+					mostr += json.get("Id") + " | ";
 
 				}
 
 				if (json.containsKey("Titulo")) {
 
-					mostr += json.get("Titulo")+" | ";
+					mostr += json.get("Titulo") + " | ";
 				}
 
 				if (json.containsKey("Autor")) {
 
-					mostr += json.get("Autor")+" | ";
+					mostr += json.get("Autor") + " | ";
 				}
 
 				if (json.containsKey("Anyo_nacimiento")) {
 
-					mostr += json.get("Anyo_nacimiento")+" | ";
+					mostr += json.get("Anyo_nacimiento") + " | ";
 
 				}
 
 				if (json.containsKey("Anyo_publicacion")) {
 
-					mostr += json.get("Anyo_publicacion")+" | ";
+					mostr += json.get("Anyo_publicacion") + " | ";
 				}
 
 				if (json.containsKey("Editorial")) {
 
-					mostr += json.get("Editorial")+" | ";
+					mostr += json.get("Editorial") + " | ";
 
 				}
 
 				if (json.containsKey("Numero_paginas")) {
 
-					mostr += json.get("Numero_paginas")+" | ";
+					mostr += json.get("Numero_paginas") + " | ";
 
 				}
 
@@ -165,6 +165,7 @@ public class Model {
 
 		}
 		mongoClient.close();
+		mostr += "Documents trovats: " + cont;
 		return mostr;
 
 	}
@@ -174,6 +175,8 @@ public class Model {
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
 
+		// Cualquier Jtex deve estar en vista o controlador nunca en modelo,
+		// el modelo es bakend no debe hacer nada de interface
 		JTextField id = new JTextField();
 		JTextField titol = new JTextField();
 		JTextField autor = new JTextField();
@@ -215,4 +218,97 @@ public class Model {
 		coleccion.insertOne(doc);
 
 	}
+
+	public void mongoRetornDoc(String id) {
+		
+		String titol="";
+		String autor="";
+		int anyo_Naixement=0;
+		int anyo_Publicacio=0;
+		String editorial="";
+		int pagines=0;
+		Image imatge = null;
+		
+		
+		
+		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
+		MongoDatabase database = mongoClient.getDatabase(this.db);
+		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
+		
+		Bson query = eq("Id", id);
+		
+		MongoCursor<Document> cursor = coleccion.find().iterator();
+		while (cursor.hasNext()) {
+			
+			while (cursor.hasNext()) {
+				
+				JSONParser parser = new JSONParser();
+				JSONObject json;
+				
+				try {
+					json = (JSONObject) parser.parse(cursor.next().toJson());
+
+				if (json.containsKey("Titulo")) {
+
+					titol=(String) json.get("Titulo");
+				}
+
+				if (json.containsKey("Autor")) {
+
+					autor= (String) json.get("Autor");
+				}
+
+				if (json.containsKey("Anyo_nacimiento")) {
+
+					anyo_Naixement=  (int) json.get("Anyo_nacimiento");
+
+				}
+
+				if (json.containsKey("Anyo_publicacion")) {
+
+					anyo_Publicacio = (int) json.get("Anyo_publicacion");
+				}
+
+				if (json.containsKey("Editorial")) {
+
+					editorial = (String) json.get("Editorial");
+
+				}
+
+				if (json.containsKey("Numero_paginas")) {
+
+					pagines = (int) json.get("Numero_paginas");
+
+				}
+				
+				if (json.containsKey("Thumbnail")) {
+
+					imatge =  (Image) json.get("Thumbnail");
+
+				}
+				
+				
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+			}
+			/*
+			 * 	String titol="";
+		String autor="";
+		int anyo_Naixement=0;
+		int anyo_Publicacio=0;
+		String editorial="";
+		int pagines=0;
+		Image imatge = null;
+			 */
+			// ver esto
+			//Llibre lib = new Llibre(id,titol,autor,anyo_Naixement,anyo_Publicacio,editorial,pagines,imatge);
+			
+		}
+		
+	}
+
 }

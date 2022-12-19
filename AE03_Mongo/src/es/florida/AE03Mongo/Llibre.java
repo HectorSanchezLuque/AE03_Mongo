@@ -122,4 +122,16 @@ public class Llibre {
 		pagines = p;
 		//imatge = im;
 	}
+	public Llibre(int ident, String tit, String autr, int aN, int aP, String ed, int p ,Image im) {
+		super();
+		id = ident;
+		titol = tit;
+		autor = autr;
+		anyo_Naixement = aN;
+		anyo_Publicacio = aP;
+		editorial = ed;
+		pagines = p;
+		imatge = im;
+	}
+	
 }

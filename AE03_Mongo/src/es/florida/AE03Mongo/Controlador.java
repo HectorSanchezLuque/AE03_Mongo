@@ -76,5 +76,29 @@ public class Controlador {
 					}
 				}
 				);
+		
+		vista.getBtnMostDoc().addActionListener(new ActionListener() {
+			
+			
+			
+			
+			public void actionPerformed(ActionEvent e) {
+				JTextField id = new JTextField();
+				id.setText("");
+				
+				Object[] message = { "Indica Id del llibre a mostrar", id};
+				
+				int option = JOptionPane.showConfirmDialog(null, message, "Mostrar un llibre", JOptionPane.OK_CANCEL_OPTION);
+				
+				
+				System.out.println(id.getText());
+				//indicar la funcio que retorna tot un llibre;
+			}
+			
+			
+		}
+				
+				
+				);
 	}
 }
