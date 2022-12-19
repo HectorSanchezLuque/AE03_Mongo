@@ -93,6 +93,10 @@ public class Controlador {
 				
 				System.out.println(id.getText());
 				//indicar la funcio que retorna tot un llibre;
+				Llibre lib = modelo.mongoRetornDoc(Integer.parseInt(id.getText()));
+				
+				 JOptionPane.showMessageDialog(null, lib.getTitol(), "InfoBox: " + "Documento encontrao", JOptionPane.INFORMATION_MESSAGE);
+				
 			}
 			
 			

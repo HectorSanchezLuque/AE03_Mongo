@@ -1,5 +1,10 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: hesalu
 Build-Jdk: 17.0.4.1
+=======
+Built-By: alvar
+Build-Jdk: 17.0.5
+>>>>>>> 92d00f0c50b367dae47b8a2d5a7e63c2a0cfdf43
 Created-By: Maven Integration for Eclipse
 
