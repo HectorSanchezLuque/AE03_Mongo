@@ -33,9 +33,10 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.gte;
+import static com.mongodb.client.model.Filters.lte;
 
 import java.awt.image.BufferedImage;
-
 
 public class Model {
 
@@ -224,55 +225,55 @@ public class Model {
 		doc.append("Thumbnail", l.getImatge());
 
 		coleccion.insertOne(doc);
+		mongoClient.close();
 
 	}
 
 	public Llibre mongoRetornDoc(int id) {
-		
-		String titol="";
-		String autor="";
-		int anyo_Naixement=0;
-		int anyo_Publicacio=0;
-		String editorial="";
-		int pagines=0;
+
+		String titol = "";
+		String autor = "";
+		int anyo_Naixement = 0;
+		int anyo_Publicacio = 0;
+		String editorial = "";
+		int pagines = 0;
 		Image imatge = null;
-		
+
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
-		
+
 		Bson query = eq("Id", id);
-		
+
 		MongoCursor<Document> cursor = coleccion.find(query).iterator();
-		
-			
-			while (cursor.hasNext()) {
-				
-				JSONParser parser = new JSONParser();
-				JSONObject json;
-				
-				try {
-					json = (JSONObject) parser.parse(cursor.next().toJson());
+
+		while (cursor.hasNext()) {
+
+			JSONParser parser = new JSONParser();
+			JSONObject json;
+
+			try {
+				json = (JSONObject) parser.parse(cursor.next().toJson());
 
 				if (json.containsKey("Titulo")) {
 
-					titol=(String) json.get("Titulo");
+					titol = (String) json.get("Titulo");
 				}
 
 				if (json.containsKey("Autor")) {
 
-					autor= (String) json.get("Autor");
+					autor = (String) json.get("Autor");
 				}
 
 				if (json.containsKey("Anyo_nacimiento")) {
 
-					anyo_Naixement=  Integer.parseInt(json.get("Anyo_nacimiento").toString());
+					anyo_Naixement = Integer.parseInt(json.get("Anyo_nacimiento").toString());
 
 				}
 
 				if (json.containsKey("Anyo_publicacion")) {
 
-					anyo_Publicacio = Integer.parseInt( json.get("Anyo_publicacion").toString());
+					anyo_Publicacio = Integer.parseInt(json.get("Anyo_publicacion").toString());
 				}
 
 				if (json.containsKey("Editorial")) {
@@ -283,39 +284,126 @@ public class Model {
 
 				if (json.containsKey("Numero_paginas")) {
 
-					pagines =  Integer.parseInt( json.get("Numero_paginas").toString());
+					pagines = Integer.parseInt(json.get("Numero_paginas").toString());
 
 				}
-				
-				if (json.containsKey("Thumbnail")) {
-					
-					byte[] btDataFile = Base64.decodeBase64(json.get("Thumbnail").toString());
-					
-					
 
-					 try {
-						 imatge = ImageIO.read(new ByteArrayInputStream(btDataFile));
+				if (json.containsKey("Thumbnail")) {
+
+					byte[] btDataFile = Base64.decodeBase64(json.get("Thumbnail").toString());
+
+					try {
+						imatge = ImageIO.read(new ByteArrayInputStream(btDataFile));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
 				}
-				
-				
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				
+
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-	
-			// ver esto
-			Llibre lib = new Llibre(id,titol,autor,anyo_Naixement,anyo_Publicacio,editorial,pagines,imatge);
-			return lib;
+
 		}
+
+		mongoClient.close();
+		Llibre lib = new Llibre(id, titol, autor, anyo_Naixement, anyo_Publicacio, editorial, pagines, imatge);
+		return lib;
+	}
+
+	public String MongoConsult(String camp, String tipus, int valor) {
+
+
+		String cam_query = "";
+		String mostr = "";
+
+		if (camp.equals("Any de naixement")) {
+
+			cam_query = "Anyo_nacimiento";
+		} else if (camp.equals("Any de publicacio")) {
+
+			cam_query = "Anyo_publicacion";
+
+		} else if (camp.equals("Numero de pagines")) {
+
+			cam_query = "Numero_paginas";
+
+		}
+
+		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
+		MongoDatabase database = mongoClient.getDatabase(this.db);
+		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
+		Bson query = null;
+		if (tipus.equals("igual")) {
+
+			query = eq(cam_query, valor);
+		} else if (tipus.equals("major o igual")) {
+
+			query = gte(cam_query, valor);
+		} else if (tipus.equals("menor o igual")) {
+			query = lte(cam_query, valor);
+		}
+
+		MongoCursor<Document> cursor = coleccion.find(query).iterator();
+		while (cursor.hasNext()) {
 		
-	
+			JSONParser parser = new JSONParser();
+			JSONObject json;
+			try {
+				json = (JSONObject) parser.parse(cursor.next().toJson());
+
+				if (json.containsKey("Id")) {
+
+					mostr += json.get("Id") + " | ";
+
+				}
+
+				if (json.containsKey("Titulo")) {
+
+					mostr += json.get("Titulo") + " | ";
+				}
+
+				if (json.containsKey("Autor")) {
+
+					mostr += json.get("Autor") + " | ";
+				}
+
+				if (json.containsKey("Anyo_nacimiento")) {
+
+					mostr += json.get("Anyo_nacimiento") + " | ";
+
+				}
+
+				if (json.containsKey("Anyo_publicacion")) {
+
+					mostr += json.get("Anyo_publicacion") + " | ";
+				}
+
+				if (json.containsKey("Editorial")) {
+
+					mostr += json.get("Editorial") + " | ";
+
+				}
+
+				if (json.containsKey("Numero_paginas")) {
+
+					mostr += json.get("Numero_paginas") + " | ";
+
+				}
+
+				mostr += "\n\n";
+
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		mongoClient.close();
+		return mostr;
+
+	}
 
 }

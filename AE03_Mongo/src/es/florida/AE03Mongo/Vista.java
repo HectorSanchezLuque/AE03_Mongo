@@ -23,6 +23,7 @@ public class Vista extends JFrame {
 	private JButton btnCrear;
 	private JTextArea textArea;
 	private JScrollPane scrollPane;
+	private JButton btnConsulta;
 
 	/**
 	 * Launch the application.
@@ -42,6 +43,9 @@ public class Vista extends JFrame {
 
 	public JButton getBtnMostrarTodo() {
 		return btnMostrarTodo;
+	}
+	public JButton getBtnConsulta() {
+		return btnConsulta;
 	}
 	public void setBtnMostrarTodo(JButton btnMostrarTodo) {
 		this.btnMostrarTodo = btnMostrarTodo;
@@ -89,23 +93,23 @@ public class Vista extends JFrame {
 		contentPane.setLayout(null);
 		
 		btnMostrarTodo = new JButton("Mostrar tot");
-		btnMostrarTodo.setBounds(16, 56, 157, 50);
+		btnMostrarTodo.setBounds(16, 11, 157, 50);
 		contentPane.add(btnMostrarTodo);
 		
 		btnMostDoc = new JButton("Mostrar Document");
-		btnMostDoc.setBounds(16, 126, 157, 50);
+		btnMostDoc.setBounds(16, 72, 157, 50);
 		contentPane.add(btnMostDoc);
 		
 		btnActualitzar = new JButton("Actualitzar Document");
-		btnActualitzar.setBounds(10, 197, 163, 50);
+		btnActualitzar.setBounds(10, 133, 163, 50);
 		contentPane.add(btnActualitzar);
 		
 		btnEsborrar = new JButton("Esborrar Document");
-		btnEsborrar.setBounds(16, 271, 157, 50);
+		btnEsborrar.setBounds(16, 194, 157, 50);
 		contentPane.add(btnEsborrar);
 		
 		btnCrear = new JButton("Crear Document");
-		btnCrear.setBounds(16, 344, 157, 50);
+		btnCrear.setBounds(16, 255, 157, 50);
 		contentPane.add(btnCrear);
 		
 		scrollPane = new JScrollPane();
@@ -115,6 +119,14 @@ public class Vista extends JFrame {
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 		textArea.setEditable(false);
+		
+		btnConsulta = new JButton("Realitzar Consulta");
+		btnConsulta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnConsulta.setBounds(16, 330, 157, 50);
+		contentPane.add(btnConsulta);
 		
 		initComponents();
 		
