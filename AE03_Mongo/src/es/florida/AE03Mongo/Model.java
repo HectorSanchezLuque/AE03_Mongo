@@ -12,12 +12,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -206,37 +210,41 @@ public class Model {
 		editorial.setText("");
 		pagines.setText("");
 		imatge.setText("");
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Imatges","jpg","png");
-        arch.setFileFilter(filter);
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Imatges", "jpg", "png");
+		arch.setFileFilter(filter);
 
-		Object[] message = {"ID", id, "Titol:", titol, "Autor:", autor, "Any de naixement:", anyo_Naixement,
+		Object[] message = { "ID", id, "Titol:", titol, "Autor:", autor, "Any de naixement:", anyo_Naixement,
 				"Any de publicació:", anyo_Publicacio, "Editorial:", editorial, "Pagines:", pagines, "Imatge:", arch };
 		int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
 
-		// (int ident, String tit, String autr, int aN, int aP, String ed, int p, Image
-		// im)
-		Llibre l = new Llibre(Integer.parseInt(id.getText()), titol.getText(), autor.getText(),
-				Integer.parseInt(anyo_Naixement.getText()), Integer.parseInt(anyo_Publicacio.getText()),
-				editorial.getText(), Integer.parseInt(pagines.getText()));
-		
-		File f = new File(arch.getSelectedFile().toString());
-		byte[] fileContent = Files.readAllBytes(f.toPath());
-		String encodedString = Base64.encodeBase64String(fileContent);
+		if (option != JOptionPane.CANCEL_OPTION) {
+			// (int ident, String tit, String autr, int aN, int aP, String ed, int p, Image
+			// im)
+			Llibre l = new Llibre(Integer.parseInt(id.getText()), titol.getText(), autor.getText(),
+					Integer.parseInt(anyo_Naixement.getText()), Integer.parseInt(anyo_Publicacio.getText()),
+					editorial.getText(), Integer.parseInt(pagines.getText()));
 
-		
-		Document doc = new Document();
+			File f = new File(arch.getSelectedFile().toString());
+			byte[] fileContent = Files.readAllBytes(f.toPath());
+			String encodedString = Base64.encodeBase64String(fileContent);
 
-		doc.append("Id", l.getId());
-		doc.append("Titulo", l.getTitol());
-		doc.append("Autor", l.getAutor());
-		doc.append("Anyo_nacimiento", l.getAnyo_Naixement());
-		doc.append("Anyo_publicacion", l.getAnyo_Publicacio());
-		doc.append("Editorial", l.getEditorial());
-		doc.append("Numero_paginas", l.getPagines());
-		doc.append("Thumbnail", encodedString);
+			Document doc = new Document();
 
-		coleccion.insertOne(doc);
-		mongoClient.close();
+			doc.append("Id", l.getId());
+			doc.append("Titulo", l.getTitol());
+			doc.append("Autor", l.getAutor());
+			doc.append("Anyo_nacimiento", l.getAnyo_Naixement());
+			doc.append("Anyo_publicacion", l.getAnyo_Publicacio());
+			doc.append("Editorial", l.getEditorial());
+			doc.append("Numero_paginas", l.getPagines());
+			doc.append("Thumbnail", encodedString);
+
+			coleccion.insertOne(doc);
+			mongoClient.close();
+		} else {
+			System.err.println("Operació cancelada");
+			mongoClient.close();
+		}
 
 	}
 
@@ -326,7 +334,6 @@ public class Model {
 
 	public String MongoConsult(String camp, String tipus, int valor) {
 
-
 		String cam_query = "";
 		String mostr = "";
 
@@ -359,7 +366,7 @@ public class Model {
 
 		MongoCursor<Document> cursor = coleccion.find(query).iterator();
 		while (cursor.hasNext()) {
-		
+
 			JSONParser parser = new JSONParser();
 			JSONObject json;
 			try {
@@ -417,4 +424,90 @@ public class Model {
 
 	}
 
+	public void MongoActualitzar() {
+
+		JTextField id = new JTextField();
+		id.setText("");
+
+		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
+		MongoDatabase database = mongoClient.getDatabase(this.db);
+		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
+
+		Object[] message = { "ID", id };
+		int option = JOptionPane.showConfirmDialog(null, message, "Busqueda per ID", JOptionPane.OK_CANCEL_OPTION);
+
+		Bson query = eq("Id", id);
+		MongoCursor<Document> cursor = coleccion.find(query).iterator();
+
+		JTextField id2 = new JTextField();
+		JTextField titol = new JTextField();
+		JTextField autor = new JTextField();
+		JTextField anyo_Naixement = new JTextField();
+		JTextField anyo_Publicacio = new JTextField();
+		JTextField editorial = new JTextField();
+		JTextField pagines = new JTextField();
+		JFileChooser arch = new JFileChooser();
+
+		id2.setText("");
+		titol.setText("");
+		autor.setText("");
+		anyo_Naixement.setText("");
+		anyo_Publicacio.setText("");
+		editorial.setText("");
+		pagines.setText("");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Imatges", "jpg", "png");
+		arch.setFileFilter(filter);
+
+		while (cursor.hasNext()) {
+
+			JSONParser parser = new JSONParser();
+			JSONObject json;
+			try {
+				json = (JSONObject) parser.parse(cursor.next().toJson());
+
+				if (json.containsKey("Id")) {
+
+					id2.setText(json.get("Id").toString());
+
+				}
+
+				if (json.containsKey("Titulo")) {
+
+					titol.setText(json.get("Id").toString());
+				}
+
+				if (json.containsKey("Autor")) {
+
+					autor.setText(json.get("Id").toString());
+				}
+
+				if (json.containsKey("Anyo_nacimiento")) {
+
+					anyo_Naixement.setText(json.get("Id").toString());
+
+				}
+
+				if (json.containsKey("Anyo_publicacion")) {
+
+					anyo_Publicacio.setText(json.get("Id").toString());
+				}
+
+				if (json.containsKey("Editorial")) {
+
+					editorial.setText(json.get("Id").toString());
+
+				}
+
+				if (json.containsKey("Numero_paginas")) {
+
+					pagines.setText(json.get("Id").toString());
+
+				}
+
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 }

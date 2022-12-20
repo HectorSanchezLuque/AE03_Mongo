@@ -139,12 +139,18 @@ public class Controlador {
 				System.out.println("Selection: " + Jcamp.getSelectedItem() + " | " + Jtipus.getSelectedItem() + ":"+ valor);
 				vista.getTextArea().setText(modelo.MongoConsult(Jcamp.getSelectedItem().toString(), Jtipus.getSelectedItem().toString(), valor) );
 
-				}catch(Exception E) {};
+				}catch(Exception E) {
+					
+				};
 				
 				
 				
 			}
-
+			});
+		vista.getBtnActualitzar().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modelo.MongoActualitzar();
+			}
 		});
 	}
 }
