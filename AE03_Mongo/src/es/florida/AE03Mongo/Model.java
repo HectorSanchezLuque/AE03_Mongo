@@ -2,12 +2,14 @@ package es.florida.AE03Mongo;
 
 import java.awt.Image;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -17,6 +19,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.codec.binary.Base64;
 import org.bson.Document;
@@ -178,7 +181,7 @@ public class Model {
 
 	}
 
-	public void MongoInsert() {
+	public void MongoInsert() throws IOException {
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
@@ -203,8 +206,10 @@ public class Model {
 		editorial.setText("");
 		pagines.setText("");
 		imatge.setText("");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Imatges","jpg","png");
+        arch.setFileFilter(filter);
 
-		Object[] message = { "Titol:", titol, "Autor:", autor, "Any de naixement:", anyo_Naixement,
+		Object[] message = {"ID", id, "Titol:", titol, "Autor:", autor, "Any de naixement:", anyo_Naixement,
 				"Any de publicació:", anyo_Publicacio, "Editorial:", editorial, "Pagines:", pagines, "Imatge:", arch };
 		int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
 
@@ -213,6 +218,12 @@ public class Model {
 		Llibre l = new Llibre(Integer.parseInt(id.getText()), titol.getText(), autor.getText(),
 				Integer.parseInt(anyo_Naixement.getText()), Integer.parseInt(anyo_Publicacio.getText()),
 				editorial.getText(), Integer.parseInt(pagines.getText()));
+		
+		File f = new File(arch.getSelectedFile().toString());
+		byte[] fileContent = Files.readAllBytes(f.toPath());
+		String encodedString = Base64.encodeBase64String(fileContent);
+
+		
 		Document doc = new Document();
 
 		doc.append("Id", l.getId());
@@ -222,7 +233,7 @@ public class Model {
 		doc.append("Anyo_publicacion", l.getAnyo_Publicacio());
 		doc.append("Editorial", l.getEditorial());
 		doc.append("Numero_paginas", l.getPagines());
-		doc.append("Thumbnail", l.getImatge());
+		doc.append("Thumbnail", encodedString);
 
 		coleccion.insertOne(doc);
 		mongoClient.close();
