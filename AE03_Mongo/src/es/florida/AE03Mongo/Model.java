@@ -424,7 +424,7 @@ public class Model {
 
 	}
 
-	public void MongoActualitzar() {
+	public void MongoActualitzar() throws IOException {
 
 		JTextField id = new JTextField();
 		id.setText("");
@@ -436,7 +436,7 @@ public class Model {
 		Object[] message = { "ID", id };
 		int option = JOptionPane.showConfirmDialog(null, message, "Busqueda per ID", JOptionPane.OK_CANCEL_OPTION);
 
-		Bson query = eq("Id", id);
+		Bson query = eq("Id", Integer.parseInt(id.getText()));
 		MongoCursor<Document> cursor = coleccion.find(query).iterator();
 
 		JTextField id2 = new JTextField();
@@ -473,41 +473,80 @@ public class Model {
 
 				if (json.containsKey("Titulo")) {
 
-					titol.setText(json.get("Id").toString());
+					titol.setText(json.get("Titulo").toString());
 				}
 
 				if (json.containsKey("Autor")) {
 
-					autor.setText(json.get("Id").toString());
+					autor.setText(json.get("Autor").toString());
 				}
 
 				if (json.containsKey("Anyo_nacimiento")) {
 
-					anyo_Naixement.setText(json.get("Id").toString());
-
+					anyo_Naixement.setText(json.get("Anyo_nacimiento").toString());
 				}
 
 				if (json.containsKey("Anyo_publicacion")) {
 
-					anyo_Publicacio.setText(json.get("Id").toString());
+					anyo_Publicacio.setText(json.get("Anyo_publicacion").toString());
 				}
 
 				if (json.containsKey("Editorial")) {
 
-					editorial.setText(json.get("Id").toString());
-
+					editorial.setText(json.get("Editorial").toString());
 				}
 
 				if (json.containsKey("Numero_paginas")) {
 
-					pagines.setText(json.get("Id").toString());
-
+					pagines.setText(json.get("Numero_paginas").toString());
 				}
 
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		Object[] message2 = { "ID", id, "Titol:", titol, "Autor:", autor, "Any de naixement:", anyo_Naixement,
+				"Any de publicació:", anyo_Publicacio, "Editorial:", editorial, "Pagines:", pagines, "Imatge:", arch };
+		int option2 = JOptionPane.showConfirmDialog(null, message2, "Login", JOptionPane.OK_CANCEL_OPTION);
+
+		if (option2 == JOptionPane.OK_OPTION) {
+			int option3 = JOptionPane.showConfirmDialog(null, "Està segur de que vol actualitzar aquest document?", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+			
+			if (option3 == JOptionPane.OK_OPTION ) {
+			
+			Document doc = new Document();
+
+			doc.append("Id", Integer.parseInt(id.getText()));
+			doc.append("Titulo", titol.getText());
+			doc.append("Autor", autor.getText());
+			try {
+				doc.append("Anyo_nacimiento", Integer.parseInt(anyo_Naixement.getText()));
+			} catch (Exception e) {
+				doc.append("Anyo_nacimiento", 0);
+			}
+
+			doc.append("Anyo_publicacion", Integer.parseInt(anyo_Publicacio.getText()));
+			doc.append("Editorial", editorial.getText());
+			doc.append("Numero_paginas", Integer.parseInt(pagines.getText()));
+
+			try {
+				File f = new File(arch.getSelectedFile().toString());
+				byte[] fileContent = Files.readAllBytes(f.toPath());
+				String encodedString = Base64.encodeBase64String(fileContent);
+				doc.append("Thumbnail", encodedString);
+			} catch (Exception e) {
+
+			}
+			
+
+			coleccion.updateOne(eq("Id", Integer.parseInt(id.getText())), new Document("$set", doc));
+			mongoClient.close();
+			
+			} else {
+				mongoClient.close();
+			}
+
 		}
 	}
 }

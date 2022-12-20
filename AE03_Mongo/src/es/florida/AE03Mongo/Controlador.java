@@ -149,7 +149,12 @@ public class Controlador {
 			});
 		vista.getBtnActualitzar().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				modelo.MongoActualitzar();
+				try {
+					modelo.MongoActualitzar();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 	}
