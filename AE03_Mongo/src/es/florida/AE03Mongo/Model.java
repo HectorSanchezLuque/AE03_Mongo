@@ -113,7 +113,7 @@ public class Model {
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
 
-		String mostr = "";
+		String mostr = "Id | Titulo | Autor | Anyo_nacimiento | Anyo_publicacion | Editorial | Numero_paginas \n";
 
 		MongoCursor<Document> cursor = coleccion.find().iterator();
 
@@ -172,7 +172,7 @@ public class Model {
 
 		}
 		mongoClient.close();
-		mostr += "Documents trovats: " + cont;
+		mostr += "Documents trobats: " + cont;
 		return mostr;
 
 	}

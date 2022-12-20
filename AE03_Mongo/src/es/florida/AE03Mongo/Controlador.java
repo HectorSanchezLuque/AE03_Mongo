@@ -8,6 +8,7 @@ import java.awt.event.WindowEvent;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -95,7 +96,18 @@ public class Controlador {
 				//indicar la funcio que retorna tot un llibre;
 				Llibre lib = modelo.mongoRetornDoc(Integer.parseInt(id.getText()));
 				
-				 JOptionPane.showMessageDialog(null, lib.getTitol(), "InfoBox: " + "Documento encontrao", JOptionPane.INFORMATION_MESSAGE);
+				vista.getTextArea().setText(
+						"Titol: "+ lib.getTitol()+"\n"+
+						"Autor: "+ lib.getAutor()+"\n"+
+						"Any de Naixement: "+lib.getAnyo_Naixement()+"\n"+
+						"Any de publicació: "+lib.getAnyo_Publicacio()+"\n"+
+						"Editorial: "+lib.getEditorial()+"\n"+
+						"Número de pàgines: "+lib.getPagines()
+						);
+				ImageIcon imatgeIcona = new ImageIcon(lib.getImatge());
+
+				JOptionPane.showMessageDialog(null, "", "",
+						JOptionPane.INFORMATION_MESSAGE, imatgeIcona);
 				
 			}
 			
