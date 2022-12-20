@@ -205,7 +205,7 @@ public class Model {
 		imatge.setText("");
 
 		Object[] message = { "Titol:", titol, "Autor:", autor, "Any de naixement:", anyo_Naixement,
-				"Any de publicació:", anyo_Publicacio, "Editoria:", editorial, "Pagines:", pagines, "Imatge:", arch };
+				"Any de publicació:", anyo_Publicacio, "Editorial:", editorial, "Pagines:", pagines, "Imatge:", arch };
 		int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
 
 		// (int ident, String tit, String autr, int aN, int aP, String ed, int p, Image
