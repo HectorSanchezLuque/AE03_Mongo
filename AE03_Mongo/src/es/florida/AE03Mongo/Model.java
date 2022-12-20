@@ -265,7 +265,7 @@ public class Model {
 		Bson query = eq("Id", id);
 
 		MongoCursor<Document> cursor = coleccion.find(query).iterator();
-
+		
 		while (cursor.hasNext()) {
 
 			JSONParser parser = new JSONParser();
@@ -457,7 +457,7 @@ public class Model {
 		pagines.setText("");
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Imatges", "jpg", "png");
 		arch.setFileFilter(filter);
-
+		
 		while (cursor.hasNext()) {
 
 			JSONParser parser = new JSONParser();
