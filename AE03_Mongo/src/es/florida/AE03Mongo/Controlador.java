@@ -1,5 +1,8 @@
 package es.florida.AE03Mongo;
 
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.HeadlessException;
 
 import java.awt.event.ActionEvent;
@@ -15,7 +18,9 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 public class Controlador {
 	private Vista vista;
@@ -112,7 +117,9 @@ public class Controlador {
 								+ "Número de pàgines: " + lib.getPagines());
 				ImageIcon imatgeIcona = new ImageIcon(lib.getImatge());
 
-				JOptionPane.showMessageDialog(null, "", "", JOptionPane.INFORMATION_MESSAGE, imatgeIcona);
+				
+				
+				JOptionPane.showMessageDialog(null, "500,500", "", JOptionPane.INFORMATION_MESSAGE, imatgeIcona);
 
 			}
 
@@ -211,6 +218,11 @@ public class Controlador {
 
 				
 				
+			}
+		});
+		vista.getBtnTancarConexio().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MongoUserCon();
 			}
 		});
 	}
