@@ -555,4 +555,15 @@ public class Model {
 
 		}
 	}
+	public void mongoDelDoc(int id) {
+		
+		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
+		MongoDatabase database = mongoClient.getDatabase(this.db);
+		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
+
+		coleccion.deleteOne(eq("Id", id));
+		
+		mongoClient.close();
+
+	}
 }

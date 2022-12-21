@@ -121,34 +121,35 @@ public class Controlador {
 
 			public void actionPerformed(ActionEvent e) {
 
-				Object[] capm = { "Id","Titulo", "Autor","Anyo_nacimiento", "Anyo_publicacion", "Editorial" ,"Numero_paginas" };
+				Object[] capm = { "Id", "Titulo", "Autor", "Anyo_nacimiento", "Anyo_publicacion", "Editorial",
+						"Numero_paginas" };
 				Object[] tipus = { "igual", "major o igual", "menor o igual" };
 
-			
 				JComboBox Jcamp = new JComboBox(capm);
 				JComboBox Jtipus = new JComboBox(tipus);
 
 				JPanel container = new JPanel();
 				container.add(Jcamp);
 				container.add(Jtipus);
-			
-				try {
-				String valor =  JOptionPane.showInputDialog(null, container, "Indica Consulta",
-						JOptionPane.QUESTION_MESSAGE);
-				
-				System.out.println("Selection: " + Jcamp.getSelectedItem() + " | " + Jtipus.getSelectedItem() + ":"+ valor);
-				
-				vista.getTextArea().setText(modelo.MongoConsult(Jcamp.getSelectedItem().toString(), Jtipus.getSelectedItem().toString(), valor) );
 
-				}catch(Exception exc) {
+				try {
+					String valor = JOptionPane.showInputDialog(null, container, "Indica Consulta",
+							JOptionPane.QUESTION_MESSAGE);
+
+					System.out.println(
+							"Selection: " + Jcamp.getSelectedItem() + " | " + Jtipus.getSelectedItem() + ":" + valor);
+
+					vista.getTextArea().setText(modelo.MongoConsult(Jcamp.getSelectedItem().toString(),
+							Jtipus.getSelectedItem().toString(), valor));
+
+				} catch (Exception exc) {
 					exc.printStackTrace();
-				};
-				
-				
-				
+				}
+				;
+
 			}
-			});
-		
+		});
+
 		vista.getBtnActualitzar().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -159,5 +160,34 @@ public class Controlador {
 				}
 			}
 		});
+
+		vista.getBtnEsborrar().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				JTextField id = new JTextField();
+				id.setText("");
+
+				Object[] message = { "Indica Id del llibre a esborrar", id };
+
+				int option = JOptionPane.showConfirmDialog(null, message, "Esborrar un llibre",
+						JOptionPane.OK_CANCEL_OPTION);
+
+				if(option == 0) {
+					
+					int option2 = JOptionPane.showConfirmDialog(null, "Estas segur que vols esborar el llibre", "Esborrar llibre",
+							JOptionPane.OK_CANCEL_OPTION);
+					
+					if(option2 == 0) {
+						
+						try{modelo.mongoDelDoc(Integer.parseInt(id.getText()));}catch(Exception ex) {}
+					}
+					
+				}
+
+			}
+
+		}
+
+		);
 	}
 }
