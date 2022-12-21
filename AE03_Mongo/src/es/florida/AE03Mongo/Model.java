@@ -75,6 +75,12 @@ public class Model {
 
 	}
 
+	/**
+	 * Funció que rep un String i el converteix a SHA-256
+	 * @param contr String que conté la contrassenya
+	 * @return Retorna un String en la contrassenya convertuda a SHA-256
+	 * @throws NoSuchAlgorithmException
+	 */
 	public String MongoConversor(String contr) throws NoSuchAlgorithmException {
 
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -89,6 +95,12 @@ public class Model {
 
 	}
 
+	/**
+	 * Funció que comprova si l'usuari i la contrassenya introduïdes existeixen en la base de dades
+	 * @param usuari String que conté el nom d'usuari
+	 * @param contr String que conté la contrassenya
+	 * @return Retorna True o False depenent de si està bé o no l'inici de sessió
+	 */
 	public Boolean MongoCompUser(String usuari, String contr) {
 
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
@@ -114,7 +126,11 @@ public class Model {
 		// correctamente----------------------------------------
 		return true;
 	}
-
+	
+	/**
+	 * Funció que fa una consulta a la base de dades i inicialitza tot el contingut d'aquesta en una variable
+	 * @return Retorna un variable en tot el contingut que trobe en la base de dades
+	 */
 	public String MongoMostrarTot() {
 		int cont = 0;
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
@@ -185,6 +201,10 @@ public class Model {
 
 	}
 
+	/**
+	 * Funció que fa un insert a la base de dades en les dades que s'introdueixen en un JOptionPane
+	 * @throws IOException
+	 */
 	public void MongoInsert() throws IOException {
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
 		MongoDatabase database = mongoClient.getDatabase(this.db);
@@ -247,7 +267,12 @@ public class Model {
 		}
 
 	}
-
+	
+	/**
+	 * Funció que busca un document en la base de dades
+	 * @param id Parametre pel qual busca el document
+	 * @return Retorna un objecte Llibre inicialitzat en les dades que ha trobat a la base de dades
+	 */
 	public Llibre mongoRetornDoc(int id) {
 
 		String titol = "";
@@ -331,7 +356,14 @@ public class Model {
 		Llibre lib = new Llibre(id, titol, autor, anyo_Naixement, anyo_Publicacio, editorial, pagines, imatge);
 		return lib;
 	}
-
+	
+	/**
+	 * Funció que realitza una consulta la base de dades
+	 * @param camp Etiqueta que serveix per a fer la busqueda
+	 * @param tipus Tipus de busqueda
+	 * @param valor Valor de la busqueda
+	 * @return Retorna un String en el resultat de la consulta
+	 */
 	public String MongoConsult(String camp, String tipus, String valor) {
 
 		String mostr = "Id | Titol | Autor | Any de naiximent | Any de publicació | Editorial | Numero de pàgines \n";
@@ -430,6 +462,10 @@ public class Model {
 
 	}
 
+	/**
+	 * Funció que busca un document mitjaçant un JOptionPane on introdueix una ID i inicialitza un altre JOptionPane en le dades que troba i fa un update a la base de dades per a actualitzar l'objecte en les noves dades
+	 * @throws IOException
+	 */
 	public void MongoActualitzar() throws IOException {
 
 		JTextField id = new JTextField();
@@ -555,6 +591,10 @@ public class Model {
 
 		}
 	}
+	/**
+	 * Funció que borra un document de la base de dades
+	 * @param id ID del document que es desitja borrar
+	 */
 	public void mongoDelDoc(int id) {
 		
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
