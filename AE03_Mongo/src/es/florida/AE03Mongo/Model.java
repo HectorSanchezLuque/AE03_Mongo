@@ -608,6 +608,10 @@ public class Model {
 
 	}
 	
+	/**
+	 * Funció que borra tots del documents de la base de dades
+	 * 
+	 */
 	public void  mongoDelCol() {
 		
 		

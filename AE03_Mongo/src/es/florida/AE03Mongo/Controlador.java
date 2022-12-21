@@ -182,16 +182,19 @@ public class Controlador {
 				int option = JOptionPane.showConfirmDialog(null, message, "Esborrar un llibre",
 						JOptionPane.OK_CANCEL_OPTION);
 
-				if(option == 0) {
-					
-					int option2 = JOptionPane.showConfirmDialog(null, "Estas segur que vols esborar el llibre", "Esborrar llibre",
-							JOptionPane.OK_CANCEL_OPTION);
-					
-					if(option2 == 0) {
-						
-						try{modelo.mongoDelDoc(Integer.parseInt(id.getText()));}catch(Exception ex) {}
+				if (option == 0) {
+
+					int option2 = JOptionPane.showConfirmDialog(null, "Estas segur que vols esborar el llibre",
+							"Esborrar llibre", JOptionPane.OK_CANCEL_OPTION);
+
+					if (option2 == 0) {
+
+						try {
+							modelo.mongoDelDoc(Integer.parseInt(id.getText()));
+						} catch (Exception ex) {
+						}
 					}
-					
+
 				}
 
 			}
@@ -199,5 +202,23 @@ public class Controlador {
 		}
 
 		);
+
+		vista.getBtn_borrCol().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				int option = JOptionPane.showConfirmDialog(null, "Estas segur que vols esborrar?", "Esborrar una Colecció",
+						JOptionPane.OK_CANCEL_OPTION);
+				if (option == 0) {
+					
+					modelo.mongoDelCol();
+				}
+				
+				
+
+				
+				
+			}
+		});
 	}
 }
