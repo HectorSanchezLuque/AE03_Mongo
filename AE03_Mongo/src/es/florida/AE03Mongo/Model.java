@@ -34,6 +34,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -606,4 +607,18 @@ public class Model {
 		mongoClient.close();
 
 	}
+	
+	public void  mongoDelCol() {
+		
+		
+		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
+		MongoDatabase database = mongoClient.getDatabase(this.db);
+		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
+		
+		BasicDBObject document = new BasicDBObject();
+		coleccion.deleteMany(document);
+		
+		mongoClient.close();
+	}
+	
 }
