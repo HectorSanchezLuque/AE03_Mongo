@@ -17,6 +17,7 @@ import java.awt.Color;
 public class Vista extends JFrame {
 
 	private JPanel contentPane;
+	private JButton btnTancarConexio;
 	private JButton btnMostrarTodo;
 	private JButton btnMostDoc;
 	private JButton btnActualitzar;
@@ -39,6 +40,14 @@ public class Vista extends JFrame {
 
 	public JButton getBtnMostrarTodo() {
 		return btnMostrarTodo;
+	}
+
+	public JButton getBtnTancarConexio() {
+		return btnTancarConexio;
+	}
+
+	public void setBtnTancarConexio(JButton btnTancarConexio) {
+		this.btnTancarConexio = btnTancarConexio;
 	}
 
 	public JButton getBtnConsulta() {
@@ -145,6 +154,10 @@ public class Vista extends JFrame {
 		btn_borrCol.setBackground(Color.RED);
 		btn_borrCol.setBounds(27, 429, 126, 21);
 		contentPane.add(btn_borrCol);
+		
+		btnTancarConexio = new JButton("Tancar conexió");
+		btnTancarConexio.setBounds(26, 391, 127, 27);
+		contentPane.add(btnTancarConexio);
 
 		initComponents();
 

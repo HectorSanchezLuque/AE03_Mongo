@@ -220,5 +220,10 @@ public class Controlador {
 				
 			}
 		});
+		vista.getBtnTancarConexio().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MongoUserCon();
+			}
+		});
 	}
 }
