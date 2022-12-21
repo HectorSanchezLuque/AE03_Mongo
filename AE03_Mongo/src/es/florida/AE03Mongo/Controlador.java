@@ -31,6 +31,9 @@ public class Controlador {
 
 	}
 
+	/**
+	 * Funció que realitza el login
+	 */
 	void MongoUserCon() {
 
 		JTextField username = new JTextField();
