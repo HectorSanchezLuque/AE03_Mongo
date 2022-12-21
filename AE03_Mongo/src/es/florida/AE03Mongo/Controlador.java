@@ -121,7 +121,7 @@ public class Controlador {
 
 			public void actionPerformed(ActionEvent e) {
 
-				Object[] capm = { "Id", "Any de naixement", "Any de publicacio", "Numero de pagines" };
+				Object[] capm = { "Id","Titulo", "Autor","Anyo_nacimiento", "Anyo_publicacion", "Editorial" ,"Numero_paginas" };
 				Object[] tipus = { "igual", "major o igual", "menor o igual" };
 
 			
@@ -133,20 +133,22 @@ public class Controlador {
 				container.add(Jtipus);
 			
 				try {
-				int valor =  Integer.parseInt(JOptionPane.showInputDialog(null, container, "Indica Consulta",
-						JOptionPane.QUESTION_MESSAGE));
+				String valor =  JOptionPane.showInputDialog(null, container, "Indica Consulta",
+						JOptionPane.QUESTION_MESSAGE);
 				
 				System.out.println("Selection: " + Jcamp.getSelectedItem() + " | " + Jtipus.getSelectedItem() + ":"+ valor);
+				
 				vista.getTextArea().setText(modelo.MongoConsult(Jcamp.getSelectedItem().toString(), Jtipus.getSelectedItem().toString(), valor) );
 
-				}catch(Exception E) {
-					
+				}catch(Exception exc) {
+					exc.printStackTrace();
 				};
 				
 				
 				
 			}
 			});
+		
 		vista.getBtnActualitzar().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {

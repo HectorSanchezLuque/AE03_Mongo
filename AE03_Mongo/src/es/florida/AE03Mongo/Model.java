@@ -121,7 +121,7 @@ public class Model {
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
 
-		String mostr = "Id | Titulo | Autor | Anyo_nacimiento | Anyo_publicacion | Editorial | Numero_paginas \n";
+		String mostr = "Id | Titol | Autor | Any de naiximent | Any de publicació | Editorial | Numero de pàgines \n";
 
 		MongoCursor<Document> cursor = coleccion.find().iterator();
 
@@ -265,7 +265,7 @@ public class Model {
 		Bson query = eq("Id", id);
 
 		MongoCursor<Document> cursor = coleccion.find(query).iterator();
-		
+
 		while (cursor.hasNext()) {
 
 			JSONParser parser = new JSONParser();
@@ -332,23 +332,9 @@ public class Model {
 		return lib;
 	}
 
-	public String MongoConsult(String camp, String tipus, int valor) {
+	public String MongoConsult(String camp, String tipus, String valor) {
 
-		String cam_query = "";
-		String mostr = "";
-
-		if (camp.equals("Any de naixement")) {
-
-			cam_query = "Anyo_nacimiento";
-		} else if (camp.equals("Any de publicacio")) {
-
-			cam_query = "Anyo_publicacion";
-
-		} else if (camp.equals("Numero de pagines")) {
-
-			cam_query = "Numero_paginas";
-
-		}
+		String mostr = "Id | Titol | Autor | Any de naiximent | Any de publicació | Editorial | Numero de pàgines \n";
 
 		MongoClient mongoClient = new MongoClient(this.ip, Integer.parseInt(this.port));
 		MongoDatabase database = mongoClient.getDatabase(this.db);
@@ -356,12 +342,32 @@ public class Model {
 		Bson query = null;
 		if (tipus.equals("igual")) {
 
-			query = eq(cam_query, valor);
+			try {
+				query = eq(camp, Integer.parseInt(valor));
+			} catch (Exception exc) {
+				
+				query = eq(camp, valor);
+			}
+
 		} else if (tipus.equals("major o igual")) {
 
-			query = gte(cam_query, valor);
+		
+			
+			try {
+				query = gte(camp, Integer.parseInt(valor));
+			} catch (Exception exc) {
+				
+				query = gte(camp, valor);
+			}
+			
 		} else if (tipus.equals("menor o igual")) {
-			query = lte(cam_query, valor);
+			
+			try {
+				query = lte(camp, Integer.parseInt(valor));
+			} catch (Exception exc) {
+				
+				query = lte(camp, valor);
+			}
 		}
 
 		MongoCursor<Document> cursor = coleccion.find(query).iterator();
@@ -457,7 +463,7 @@ public class Model {
 		pagines.setText("");
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Imatges", "jpg", "png");
 		arch.setFileFilter(filter);
-		
+
 		while (cursor.hasNext()) {
 
 			JSONParser parser = new JSONParser();
@@ -511,38 +517,38 @@ public class Model {
 		int option2 = JOptionPane.showConfirmDialog(null, message2, "Login", JOptionPane.OK_CANCEL_OPTION);
 
 		if (option2 == JOptionPane.OK_OPTION) {
-			int option3 = JOptionPane.showConfirmDialog(null, "Està segur de que vol actualitzar aquest document?", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
-			
-			if (option3 == JOptionPane.OK_OPTION ) {
-			
-			Document doc = new Document();
+			int option3 = JOptionPane.showConfirmDialog(null, "Està segur de que vol actualitzar aquest document?",
+					"Advertencia", JOptionPane.OK_CANCEL_OPTION);
 
-			doc.append("Id", Integer.parseInt(id.getText()));
-			doc.append("Titulo", titol.getText());
-			doc.append("Autor", autor.getText());
-			try {
-				doc.append("Anyo_nacimiento", Integer.parseInt(anyo_Naixement.getText()));
-			} catch (Exception e) {
-				doc.append("Anyo_nacimiento", 0);
-			}
+			if (option3 == JOptionPane.OK_OPTION) {
 
-			doc.append("Anyo_publicacion", Integer.parseInt(anyo_Publicacio.getText()));
-			doc.append("Editorial", editorial.getText());
-			doc.append("Numero_paginas", Integer.parseInt(pagines.getText()));
+				Document doc = new Document();
 
-			try {
-				File f = new File(arch.getSelectedFile().toString());
-				byte[] fileContent = Files.readAllBytes(f.toPath());
-				String encodedString = Base64.encodeBase64String(fileContent);
-				doc.append("Thumbnail", encodedString);
-			} catch (Exception e) {
+				doc.append("Id", Integer.parseInt(id.getText()));
+				doc.append("Titulo", titol.getText());
+				doc.append("Autor", autor.getText());
+				try {
+					doc.append("Anyo_nacimiento", Integer.parseInt(anyo_Naixement.getText()));
+				} catch (Exception e) {
+					doc.append("Anyo_nacimiento", 0);
+				}
 
-			}
-			
+				doc.append("Anyo_publicacion", Integer.parseInt(anyo_Publicacio.getText()));
+				doc.append("Editorial", editorial.getText());
+				doc.append("Numero_paginas", Integer.parseInt(pagines.getText()));
 
-			coleccion.updateOne(eq("Id", Integer.parseInt(id.getText())), new Document("$set", doc));
-			mongoClient.close();
-			
+				try {
+					File f = new File(arch.getSelectedFile().toString());
+					byte[] fileContent = Files.readAllBytes(f.toPath());
+					String encodedString = Base64.encodeBase64String(fileContent);
+					doc.append("Thumbnail", encodedString);
+				} catch (Exception e) {
+
+				}
+
+				coleccion.updateOne(eq("Id", Integer.parseInt(id.getText())), new Document("$set", doc));
+				mongoClient.close();
+
 			} else {
 				mongoClient.close();
 			}
