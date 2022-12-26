@@ -619,8 +619,7 @@ public class Model {
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.llibres);
 		
-		BasicDBObject document = new BasicDBObject();
-		coleccion.deleteMany(document);
+		coleccion.drop();
 		
 		mongoClient.close();
 	}
