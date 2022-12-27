@@ -108,7 +108,6 @@ public class Model {
 		MongoDatabase database = mongoClient.getDatabase(this.db);
 		MongoCollection<Document> coleccion = database.getCollection(this.users);
 		// CRUD operations
-		System.out.println(contr);
 
 		Bson query = and(Arrays.asList(eq("user", usuari), eq("pass", contr)));
 
@@ -609,7 +608,7 @@ public class Model {
 	}
 	
 	/**
-	 * Funció que borra tots del documents de la base de dades
+	 * Funció que borra tota  la coleccio de llibres de la base de dades
 	 * 
 	 */
 	public void  mongoDelCol() {
