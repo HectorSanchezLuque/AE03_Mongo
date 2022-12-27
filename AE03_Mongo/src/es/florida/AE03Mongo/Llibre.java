@@ -14,100 +14,89 @@ public class Llibre {
 	Image imatge;
 
 
+	
 
+	/**
+	 * @return retorna la id del llibre
+	 */
 	public int getId() {
 		return id;
 	}
 
 
 
-	public void setId(int id) {
-		this.id = id;
-	}
 
 
-
+	/**
+	 * @return retorna el títol del llibre
+	 */
 	public String getTitol() {
 		return titol;
 	}
 
 
 
-	public void setTitol(String titol) {
-		this.titol = titol;
-	}
 
-
-
+	/**
+	 * @return retorna el autor del llibre
+	 */
 	public String getAutor() {
 		return autor;
 	}
 
 
 
-	public void setAutor(String autor) {
-		this.autor = autor;
-	}
 
 
-
+	/**
+	 * @return retorna el any de naixement del autor que a fet el llibre
+	 */
 	public int getAnyo_Naixement() {
 		return anyo_Naixement;
 	}
 
 
 
-	public void setAnyo_Naixement(int anyo_Naixement) {
-		this.anyo_Naixement = anyo_Naixement;
-	}
 
-
-
+	/**
+	 * @return retorna el any de públicació de llibre
+	 */
 	public int getAnyo_Publicacio() {
 		return anyo_Publicacio;
 	}
 
 
 
-	public void setAnyo_Publicacio(int anyo_Publicacio) {
-		this.anyo_Publicacio = anyo_Publicacio;
-	}
 
-
-
+	/**
+	 * @return retorna la editorial del LLibre
+	 */
 	public String getEditorial() {
 		return editorial;
 	}
 
 
 
-	public void setEditorial(String editorial) {
-		this.editorial = editorial;
-	}
 
-
-
+	/**
+	 * @return retorna les págines del llibre
+	 */
 	public int getPagines() {
 		return pagines;
 	}
 
 
 
-	public void setPagines(int pagines) {
-		this.pagines = pagines;
-	}
 
-
-
+	/**
+	 * @return retorna la image del llibre
+	 */
 	public Image getImatge() {
 		return imatge;
 	}
 
 
 
-	public void setImatge(Image imatge) {
-		this.imatge = imatge;
-	}
 
 
 

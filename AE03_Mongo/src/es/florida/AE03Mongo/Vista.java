@@ -37,67 +37,71 @@ public class Vista extends JFrame {
 	 * frame.setVisible(true); } catch (Exception e) { e.printStackTrace(); } } });
 	 * }
 	 */
+	
 
+	/**
+	 * @return retorna el botò de Mostrar tot
+	 */
 	public JButton getBtnMostrarTodo() {
 		return btnMostrarTodo;
 	}
 
+	/**
+	 * @return retorna el botò de tancar la conexió
+	 */
 	public JButton getBtnTancarConexio() {
 		return btnTancarConexio;
 	}
-
-	public void setBtnTancarConexio(JButton btnTancarConexio) {
-		this.btnTancarConexio = btnTancarConexio;
-	}
-
+	
+	/**
+	 * @return retorna el botò de fer una consulta
+	 */
 	public JButton getBtnConsulta() {
 		return btnConsulta;
 	}
 
-	public void setBtnMostrarTodo(JButton btnMostrarTodo) {
-		this.btnMostrarTodo = btnMostrarTodo;
-	}
-
+	/**
+	 * @return retorna el botò de 
+	 */
 	public JButton getBtnMostDoc() {
 		return btnMostDoc;
 	}
 
-	public void setBtnMostDoc(JButton btnMostDoc) {
-		this.btnMostDoc = btnMostDoc;
-	}
 
+	/**
+	 * @return retorna el botò de actulizar un llibre
+	 */
 	public JButton getBtnActualitzar() {
 		return btnActualitzar;
 	}
 
-	public void setBtnActualitzar(JButton btnActualitzar) {
-		this.btnActualitzar = btnActualitzar;
-	}
 
+	/**
+	 * @return retorna el botò de esborrar un llibre
+	 */
 	public JButton getBtnEsborrar() {
 		return btnEsborrar;
 	}
 
-	public void setBtnEsborrar(JButton btnEsborrar) {
-		this.btnEsborrar = btnEsborrar;
-	}
 
+	/**
+	 * @return retorna el botò de crear un llibre
+	 */
 	public JButton getBtnCrear() {
 		return btnCrear;
 	}
 
-	public void setBtnCrear(JButton btnCrear) {
-		this.btnCrear = btnCrear;
-	}
-
+	/**
+	 * @return retorna el Area de text per a mostrar informació
+	 */
 	public JTextArea getTextArea() {
 		return textArea;
 	}
 
-	public void setTextArea(JTextArea textArea) {
-		this.textArea = textArea;
-	}
 
+	/**
+	 * @return retorna el botò de boora tota un coleció com la coleció en si
+	 */
 	public JButton getBtn_borrCol() {
 		return btn_borrCol;
 	}
@@ -163,6 +167,9 @@ public class Vista extends JFrame {
 
 	}
 
+	/*
+	 * Inicializar la interface
+	 */
 	public void initComponents() {
 		setResizable(false);
 		setTitle("Aplicació");
